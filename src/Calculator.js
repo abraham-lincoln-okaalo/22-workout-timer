@@ -15,15 +15,28 @@ function Calculator({ workouts, allowSound }) {
     [number, sets, speed, durationBreak]
   );
 
-  // const duration = (number * sets * speed) / 60 + (sets - 1) * durationBreak;
+  useEffect(
+    function () {
+      const playSound = function () {
+        if (!allowSound) return;
+        const sound = new Audio(clickSound);
+
+        sound.play();
+      };
+      playSound();
+    },
+    [allowSound, duration]
+  );
+
+  useEffect(
+    function () {
+      document.title = `Your ${number} - exercise workout`;
+    },
+    [number, duration, sets]
+  );
+
   const mins = Math.floor(duration);
   const seconds = (duration - mins) * 60;
-
-  const playSound = function () {
-    if (!allowSound) return;
-    const sound = new Audio(clickSound);
-    sound.play();
-  };
 
   function handleInc() {
     setDuration((duration) => Math.floor(duration) + 1);
